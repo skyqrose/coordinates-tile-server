@@ -43,7 +43,13 @@ def tile(z, x, y):
 
     # text
     text = f"z: {z}\nx: {x}\ny: {y}"
-    draw.multiline_text((12, 8), text, fill=COLOR, align="left")
+    (textsize_x, textsize_y) = draw.multiline_textsize(text)
+    margin = 10
+    draw.rectangle(
+        [(margin, margin), (margin* 3 + textsize_x, margin* 3 + textsize_y)],
+        fill=(0, 0, 0, 128)
+    )
+    draw.multiline_text((margin * 2, margin * 2), text, fill=(255, 255, 255, 255), align="left")
 
     # convert to bytes
     imgBytes = io.BytesIO()
