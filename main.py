@@ -12,13 +12,15 @@ class request_handler(BaseHTTPRequestHandler):
                 self._write_data(200, file)
             except:
                 self._write_data(500, "500")
-        if self.path.startswith("/tiles/") and self.path.endswith(".png"):
+        elif self.path.startswith("/tiles/") and self.path.endswith(".png"):
             path_segments = self.path.split("/")
             if len(path_segments) == 5:
                 z = path_segments[2]
                 x = path_segments[3]
                 y = path_segments[4][:-4]
-            self._write_data(200, tile(z, x, y))
+                self._write_data(200, tile(z, x, y))
+            else:
+                self._write_data(404, "404")
         else:
             self._write_data(404, "404")
 
