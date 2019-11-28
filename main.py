@@ -41,7 +41,7 @@ def tile(z, x, y):
 
     # text
     text = f"z: {z}\nx: {x}\ny: {y}"
-    draw.multiline_text((128, 128), text, fill=COLOR, align="left")
+    draw.multiline_text((12, 8), text, fill=COLOR, align="left")
 
     # convert to bytes
     imgBytes = io.BytesIO()
