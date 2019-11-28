@@ -23,7 +23,7 @@ class request_handler(BaseHTTPRequestHandler):
         self.wfile.write(data)
 
 def tile():
-    img = Image.new("RGBA", (255, 255), color = (0, 0, 0, 0))
+    img = Image.new("RGBA", (256, 256), color = (0, 0, 0, 0))
     imgBytes = io.BytesIO()
     img.save(imgBytes, format="PNG")
     return imgBytes.getvalue()
