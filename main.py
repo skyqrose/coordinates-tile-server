@@ -2,7 +2,7 @@ from http.server import HTTPServer, BaseHTTPRequestHandler
 from PIL import Image, ImageDraw
 import io
 
-COLOR = (214, 65, 216, 255)
+TRANSPARENT_BLACK = (0, 0, 0, 128)
 
 class request_handler(BaseHTTPRequestHandler):
     def do_GET(self):
@@ -36,10 +36,10 @@ def tile(z, x, y):
     draw = ImageDraw.Draw(img)
 
     # borders
-    draw.line([(0, 0), (0, 255)], fill = COLOR, width = 1)
-    draw.line([(0, 255), (255, 255)], fill = COLOR, width = 1)
-    draw.line([(255, 255), (255, 0)], fill = COLOR, width = 1)
-    draw.line([(255, 0), (0, 0)], fill = COLOR, width = 1)
+    draw.line([(0, 0), (0, 255)], fill=TRANSPARENT_BLACK, width=1)
+    draw.line([(0, 255), (255, 255)], fill=TRANSPARENT_BLACK, width=1)
+    draw.line([(255, 255), (255, 0)], fill=TRANSPARENT_BLACK, width=1)
+    draw.line([(255, 0), (0, 0)], fill=TRANSPARENT_BLACK, width=1)
 
     # text
     text = f"z: {z}\nx: {x}\ny: {y}"
@@ -47,7 +47,7 @@ def tile(z, x, y):
     margin = 10
     draw.rectangle(
         [(margin, margin), (margin* 3 + textsize_x, margin* 3 + textsize_y)],
-        fill=(0, 0, 0, 128)
+        fill=TRANSPARENT_BLACK
     )
     draw.multiline_text((margin * 2, margin * 2), text, fill=(255, 255, 255, 255), align="left")
 
