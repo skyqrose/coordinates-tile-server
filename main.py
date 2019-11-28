@@ -12,8 +12,13 @@ class request_handler(BaseHTTPRequestHandler):
                 self._write_data(200, file)
             except:
                 self._write_data(500, "500")
-        if self.path == "/tile":
-            self._write_data(200, tile())
+        if self.path.startswith("/tiles/") and self.path.endswith(".png"):
+            path_segments = self.path.split("/")
+            if len(path_segments) == 5:
+                z = path_segments[2]
+                x = path_segments[3]
+                y = path_segments[4][:-4]
+            self._write_data(200, tile(z, x, y))
         else:
             self._write_data(404, "404")
 
@@ -24,19 +29,24 @@ class request_handler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(data)
 
-def tile():
+def tile(z, x, y):
     img = Image.new("RGBA", (256, 256), color = (0, 0, 0, 0))
-    drawBorders(img)
-    imgBytes = io.BytesIO()
-    img.save(imgBytes, format="PNG")
-    return imgBytes.getvalue()
-
-def drawBorders(img):
     draw = ImageDraw.Draw(img)
+
+    # borders
     draw.line([(0, 0), (0, 255)], fill = COLOR, width = 1)
     draw.line([(0, 255), (255, 255)], fill = COLOR, width = 1)
     draw.line([(255, 255), (255, 0)], fill = COLOR, width = 1)
     draw.line([(255, 0), (0, 0)], fill = COLOR, width = 1)
+
+    # text
+    text = f"z: {z}\nx: {x}\ny: {y}"
+    draw.multiline_text((128, 128), text, fill=COLOR, align="left")
+
+    # convert to bytes
+    imgBytes = io.BytesIO()
+    img.save(imgBytes, format="PNG")
+    return imgBytes.getvalue()
 
 if __name__ == "__main__":
     httpd = HTTPServer(('localhost', 6371), request_handler)
